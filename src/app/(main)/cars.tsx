@@ -1,9 +1,10 @@
 import { Text, View } from 'react-native';
+import { CarList } from '@/features/inventory';
 
 const CarsScreen = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <Text>Cars Screen</Text>
+      <CarList />
     </View>
   );
 };
