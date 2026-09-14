@@ -18,6 +18,18 @@ Git is only for read-only context gathering. Agents use `git status`, `git diff`
 - **NEVER** run `git add`, `git commit`, `git push`, `git tag`, or any other git-mutating command.
 - **NEVER** tell the user when to commit/push. The user decides that.
 
+# CRITICAL: Subagent Delegation & Custom Agents
+
+- **Match model complexity to task cognitive load.** Never use expensive or heavy models for routine, single-purpose tasks. Spawn custom subagents using fast, lightweight models instead (e.g., `glm-nano` or equivalent) for low-cognitive work such as semantic file discovery, log parsing, or basic syntax formatting.
+- **Do not replace deterministic tools with agent-based solutions.** Do not spawn a "file search agent" for simple keyword or regex lookups. Rely on standard CLI tools like `ripgrep`, `find`, AST parsers first. Only delegate to a custom search agent when the task requires semantic understanding or context synthesis across the codebase.
+- **Enforce strict boundaries for specialized subagents.** When creating a custom agent (e.g., "Semantic Searcher", "Log Analyzer", "Linter Auto-fixer"), restrict it to a single responsibility. Provide it with a tightly scoped prompt and limit its context window to prevent scope creep and unnecessary token usage.
+- **Always delegate context-heavy work to one or more capable `glm-flash` subagents.** This includes open-ended codebase discovery, broad architectural searches, gathering context across many layers, and work that would pollute the main agent's context window.
+- **Run independent subagents in parallel whenever possible.** Do not duplicate their delegated exploration or implementation in the main agent unless integration, conflict resolution, or verification explicitly requires it.
+- **Substantial implementations require an independent review cycle.** After an implementation subagent completes a large system, feature, or multi-file change, spawn a fresh, capable subagent to review the complete diff as if it were a pull request. The review must focus strictly on correctness, regressions, security, production risks, and missing tests without modifying the implementation itself.
+- **Delegate review fixes to a seperate subagent.** Pass all actionable review findings to a fresh implementation subagent. Have it apply the changes and tests, running another independent review cycle if the fixes are substantial. Repeat until no material findings remain.
+- **The main agent remains responsible for integration and final verification.** It must inspect the resulting diffs from all subagents, resolve conflicts, and run all required tests and builds before reporting completion.
+- **Do not spawn any subagent for a narrow, straightforward task.** A target read, search, or edit involving only a small number of known files must remain with the main agent to avoid orchestration overhead.
+
 # Documentation Map
 
 | File                    | Contents                                                                                                      |
