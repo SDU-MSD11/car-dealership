@@ -10,4 +10,9 @@ const Stack = ({ children }) =>
 
 Stack.Screen = jest.fn(() => null);
 
-module.exports = { Stack, Tabs };
+const useRouter = jest.fn(() => ({
+  replace: jest.fn(),
+  push: jest.fn(),
+}));
+
+module.exports = { Stack, Tabs, useRouter };

@@ -1,12 +1,11 @@
 import { Text, View } from 'react-native';
-import { CarList } from '@/features/inventory';
 
-const CarsScreen = () => {
+const FilterSortScreen = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <CarList />
+      <Text>Filter / Sort</Text>
     </View>
   );
 };
 
-export default CarsScreen;
+export default FilterSortScreen;
