@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
 
-const SettingsScreen = () => {
+const LoginRegisterScreen = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <Text>Settings Screen</Text>
+      <Text>Login / Register</Text>
     </View>
   );
 };
 
-export default SettingsScreen;
+export default LoginRegisterScreen;

@@ -7,16 +7,19 @@ jest.mock('expo-router');
 jest.mock('expo-status-bar');
 
 describe('Layout', () => {
-  it('configures the main route and dark status bar', () => {
+  it('configures the splash, tab group and stack routes', () => {
     render(<Layout />);
 
     const screenMock = Stack.Screen as unknown as jest.Mock;
     const statusBarMock = StatusBar as unknown as jest.Mock;
 
-    expect(screenMock).toHaveBeenCalledWith(
-      { name: '(main)', options: { headerShown: false } },
-      undefined,
-    );
+    expect(screenMock).toHaveBeenCalledTimes(4);
+    expect(screenMock.mock.calls).toEqual([
+      [{ name: 'splash', options: { headerShown: false } }],
+      [{ name: '(main)', options: { headerShown: false } }],
+      [{ name: 'home', options: { headerShown: false } }],
+      [{ name: 'booking', options: { headerShown: false } }],
+    ]);
     expect(statusBarMock).toHaveBeenCalledWith({ style: 'dark' }, undefined);
   });
 });

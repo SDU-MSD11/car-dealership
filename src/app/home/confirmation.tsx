@@ -1,11 +1,11 @@
 import { Text, View } from 'react-native';
 
-const HomeScreen = () => {
+const ConfirmationScreen = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <Text>Map / Car List</Text>
+      <Text>Confirmation</Text>
     </View>
   );
 };
 
-export default HomeScreen;
+export default ConfirmationScreen;
