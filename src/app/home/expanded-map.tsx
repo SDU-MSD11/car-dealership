@@ -1,9 +1,10 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { DealershipMap } from '@/features/map';
 
 const ExpandedMapScreen = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text>Expanded Map</Text>
+    <View className="flex-1">
+      <DealershipMap className="flex-1" />
     </View>
   );
 };
