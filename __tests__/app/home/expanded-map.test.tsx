@@ -1,10 +1,29 @@
 import { render } from '@testing-library/react-native';
 import ExpandedMapScreen from '@/app/home/expanded-map';
 
-describe('ExpandedMapScreen', () => {
-  it('renders the expanded map placeholder', () => {
-    const { getByText } = render(<ExpandedMapScreen />);
+jest.mock('expo-location', () => ({
+  requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'denied' }),
+  getCurrentPositionAsync: jest.fn(),
+}));
 
-    expect(getByText('Expanded Map')).toBeTruthy();
+jest.mock('expo-router', () => ({
+  useFocusEffect: jest.fn(),
+}));
+
+jest.mock('react-native-webview', () => {
+  const { View: MockView } = require('react-native');
+  return {
+    __esModule: true,
+    WebView: (props: Record<string, unknown>) => (
+      <MockView testID="mock-web-view" {...props} />
+    ),
+  };
+});
+
+describe('ExpandedMapScreen', () => {
+  it('renders the fullscreen map', () => {
+    const { getByTestId } = render(<ExpandedMapScreen />);
+
+    expect(getByTestId('dealership-map')).toBeTruthy();
   });
 });

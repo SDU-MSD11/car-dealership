@@ -42,3 +42,6 @@ yarn-error.*
 
 # coverage
 coverage/**/*
+
+# opencode session export
+ai-log-*-session.json
