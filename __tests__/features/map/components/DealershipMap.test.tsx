@@ -1,25 +1,33 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { FALLBACK_REGION, useMapStore } from '@/features/map';
 import { DealershipMap } from '@/features/map';
 
-jest.mock('expo-location', () => ({
-  requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'denied' }),
-  getCurrentPositionAsync: jest.fn(),
-}));
+jest.mock(
+  'expo-location',
+  () => ({
+    requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'denied' }),
+    getCurrentPositionAsync: jest.fn(),
+  }),
+  { virtual: true },
+);
 
 jest.mock('expo-router', () => ({
   useFocusEffect: jest.fn(),
 }));
 
-jest.mock('react-native-webview', () => {
-  const { View: MockView } = require('react-native');
-  return {
-    __esModule: true,
-    WebView: (props: Record<string, unknown>) => (
-      <MockView testID="mock-web-view" {...props} />
-    ),
-  };
-});
+jest.mock(
+  'react-native-webview',
+  () => {
+    const { View: MockView } = require('react-native');
+    return {
+      __esModule: true,
+      WebView: (props: Record<string, unknown>) => (
+        <MockView testID="mock-web-view" {...props} />
+      ),
+    };
+  },
+  { virtual: true },
+);
 
 describe('DealershipMap', () => {
   beforeEach(() => {
@@ -27,7 +35,9 @@ describe('DealershipMap', () => {
     useMapStore.setState({
       region: FALLBACK_REGION,
       accuracy: null,
-      permissionStatus: 'undetermined',
+      // Seed 'denied' so requestLocation() no-ops on mount: with
+      // 'undetermined' its async denial-settling fires outside act().
+      permissionStatus: 'denied',
       isLoading: false,
       error: null,
     });
@@ -52,7 +62,9 @@ describe('DealershipMap', () => {
     const { getByTestId, rerender } = render(<DealershipMap />);
     expect(getByTestId('dealership-map').props.source.html as string).not.toContain('circleMarker');
 
-    useMapStore.setState({ permissionStatus: 'granted', accuracy: 20 });
+    act(() => {
+      useMapStore.setState({ permissionStatus: 'granted', accuracy: 20 });
+    });
     rerender(<DealershipMap />);
 
     const html = getByTestId('dealership-map').props.source.html as string;

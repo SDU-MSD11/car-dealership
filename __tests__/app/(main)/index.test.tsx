@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react-native';
 import HomeScreen from '@/app/(main)/index';
 import { useCarStore } from '@/features/cars';
+import { useMapStore } from '@/features/map';
 
 jest.mock(
   'expo-location',
@@ -40,6 +41,9 @@ jest.mock('@expo/vector-icons/FontAwesome5', () => {
 
 describe('HomeScreen', () => {
   beforeEach(() => {
+    // Seed 'denied' so requestLocation() no-ops on mount: with the default
+    // 'undetermined' its async denial-settling fires outside act().
+    useMapStore.setState({ permissionStatus: 'denied' });
     useCarStore.setState({
       cars: [
         { id: '1', maker: 'Toyota', model: 'Camry', price: 59, passengers: 5, transmission: 'Automatic', description: 'a' },
