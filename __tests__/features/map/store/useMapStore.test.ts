@@ -1,10 +1,14 @@
 import * as Location from 'expo-location';
 import { FALLBACK_REGION, useMapStore } from '@/features/map/store/useMapStore';
 
-jest.mock('expo-location', () => ({
-  requestForegroundPermissionsAsync: jest.fn(),
-  getCurrentPositionAsync: jest.fn(),
-}));
+jest.mock(
+  'expo-location',
+  () => ({
+    requestForegroundPermissionsAsync: jest.fn(),
+    getCurrentPositionAsync: jest.fn(),
+  }),
+  { virtual: true },
+);
 
 const mockedLocation = Location as jest.Mocked<typeof Location>;
 
@@ -34,6 +38,9 @@ describe('useMapStore', () => {
   });
 
   it('centers on the user location when permission is granted', async () => {
+    // Guard: if the expo-location mock ever stops applying, fail loudly here
+    // instead of surfacing as a confusing 'undetermined' status assertion.
+    expect(jest.isMockFunction(mockedLocation.requestForegroundPermissionsAsync)).toBe(true);
     mockedLocation.requestForegroundPermissionsAsync.mockResolvedValue({ status: 'granted' } as never);
     mockedLocation.getCurrentPositionAsync.mockResolvedValue({
       coords: { latitude: 55.7, longitude: 12.6, accuracy: 20 },
@@ -48,6 +55,9 @@ describe('useMapStore', () => {
   });
 
   it('keeps the fallback region when permission is denied', async () => {
+    // Guard: if the expo-location mock ever stops applying, fail loudly here
+    // instead of surfacing as a confusing 'undetermined' status assertion.
+    expect(jest.isMockFunction(mockedLocation.requestForegroundPermissionsAsync)).toBe(true);
     mockedLocation.requestForegroundPermissionsAsync.mockResolvedValue({ status: 'denied' } as never);
 
     await useMapStore.getState().requestLocation();

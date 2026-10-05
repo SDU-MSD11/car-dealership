@@ -1,10 +1,13 @@
-import { Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { CarPaginatedList } from '@/features/cars';
 
 const FullCarListScreen = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text>Full Car List</Text>
-    </View>
+    <ScrollView className="flex-1">
+      <View className="flex-1 p-4">
+        <CarPaginatedList pageSize={5} />
+      </View>
+    </ScrollView>
   );
 };
 

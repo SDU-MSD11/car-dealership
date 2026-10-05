@@ -1,12 +1,20 @@
-jest.mock('expo-location', () => ({
-  requestForegroundPermissionsAsync: jest.fn(),
-  getCurrentPositionAsync: jest.fn(),
-}));
+jest.mock(
+  'expo-location',
+  () => ({
+    requestForegroundPermissionsAsync: jest.fn(),
+    getCurrentPositionAsync: jest.fn(),
+  }),
+  { virtual: true },
+);
 
-jest.mock('react-native-webview', () => ({
-  __esModule: true,
-  WebView: () => null,
-}));
+jest.mock(
+  'react-native-webview',
+  () => ({
+    __esModule: true,
+    WebView: () => null,
+  }),
+  { virtual: true },
+);
 
 import { DealershipMap, MapCard, useMapStore } from '@/features/map';
 

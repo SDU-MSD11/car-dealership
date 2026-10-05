@@ -3,25 +3,33 @@ import { router } from 'expo-router';
 import { FALLBACK_REGION, useMapStore } from '@/features/map';
 import { MapCard } from '@/features/map';
 
-jest.mock('expo-location', () => ({
-  requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'denied' }),
-  getCurrentPositionAsync: jest.fn(),
-}));
+jest.mock(
+  'expo-location',
+  () => ({
+    requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'denied' }),
+    getCurrentPositionAsync: jest.fn(),
+  }),
+  { virtual: true },
+);
 
 jest.mock('expo-router', () => ({
   router: { push: jest.fn() },
   useFocusEffect: jest.fn(),
 }));
 
-jest.mock('react-native-webview', () => {
-  const { View: MockView } = require('react-native');
-  return {
-    __esModule: true,
-    WebView: (props: Record<string, unknown>) => (
-      <MockView testID="mock-web-view" {...props} />
-    ),
-  };
-});
+jest.mock(
+  'react-native-webview',
+  () => {
+    const { View: MockView } = require('react-native');
+    return {
+      __esModule: true,
+      WebView: (props: Record<string, unknown>) => (
+        <MockView testID="mock-web-view" {...props} />
+      ),
+    };
+  },
+  { virtual: true },
+);
 
 jest.mock('@expo/vector-icons/FontAwesome5', () => {
   const { View: MockView } = require('react-native');
@@ -37,7 +45,9 @@ describe('MapCard', () => {
     useMapStore.setState({
       region: FALLBACK_REGION,
       accuracy: null,
-      permissionStatus: 'undetermined',
+      // Seed 'denied' so requestLocation() no-ops on mount: with
+      // 'undetermined' its async denial-settling fires outside act().
+      permissionStatus: 'denied',
       isLoading: false,
       error: null,
     });
