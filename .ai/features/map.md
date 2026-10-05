@@ -62,7 +62,7 @@ State: `region`, `accuracy`, `permissionStatus`, `isLoading`, `error`. Actions: 
 
 Standard mocks: `expo-location` (`requestForegroundPermissionsAsync`, `getCurrentPositionAsync`), `expo-router` (`router.push`, `useFocusEffect`), `react-native-webview` (`WebView` → `MockView`), `FontAwesome5` → `MockView`.
 
-> Environment note: `expo-location` and `react-native-webview` are declared in `package.json` but not installed in `node_modules`, so these suites fail with `Cannot find module` unless mocks use `{ virtual: true }` or the packages are installed. Touching those tests is out of scope unless the task involves the map.
+> Environment note: `expo-location` and `react-native-webview` mocks use `{ virtual: true }` so the factories apply hermetically whether or not the packages are installed in `node_modules`. Touching those tests is out of scope unless the task involves the map.
 
 ## Conventions / notes
 
