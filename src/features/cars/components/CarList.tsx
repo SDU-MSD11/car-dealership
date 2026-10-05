@@ -1,5 +1,6 @@
-import { FlatList, Text } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useCarStore } from '../store/useCarStore';
+import { CarCard } from './CarCard';
 
 export const CarList = () => {
     const cars = useCarStore((state) => state.cars);
@@ -8,11 +9,11 @@ export const CarList = () => {
         <FlatList
             data={cars}
             keyExtractor={(item) => item.id}
-            contentContainerClassName="flex-1 justify-center"
+            contentContainerClassName="gap-3"
             renderItem={({ item }) => (
-                <Text>
-                    ({item.id}) {item.maker} {item.model}
-                </Text>
+                <View>
+                    <CarCard car={item} />
+                </View>
             )}
         />
     );

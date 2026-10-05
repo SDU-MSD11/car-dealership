@@ -37,8 +37,11 @@ Git is only for read-only context gathering. Agents use `git status`, `git diff`
 | `.ai/AGENTS.md`       | Overall Agents rules, behavior for Agents and how they should operate in this repository.                     |
 | `.ai/ARCHITECTURE.md` | Architecture design guide, module placement, folder structure, naming conventions, and technology priorities. |
 | `.ai/TESTING.md`      | Dictating rules and behavior for making tests and how they should be structured, placed and made.             |
+| `.ai/features/`       | Per-feature documentation, one file per feature (`.ai/features/<name>.md`, matching `src/features/<name>/`).  |
 
 Use the documentation map to select the directly applicable file or section. Do not automatically open `ARCHITECTURE.md` or any other documentation file when the task is already covered by the this file and current agent context.
+
+Load only the feature doc relevant to the current task (e.g. `.ai/features/cars.md` when working on cars). Do not preload every file in `.ai/features/` — discover via the filename matching `src/features/<name>/`, then open just that one.
 
 # Coding DOs & DON'Ts
 

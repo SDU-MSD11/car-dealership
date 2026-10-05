@@ -1,12 +1,15 @@
-import { Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { MapCard } from '@/features/map';
+import { CarPreviewList } from '@/features/cars';
 
 const HomeScreen = () => {
   return (
-    <View className="flex-1 p-4">
-      <MapCard />
-      <Text>Map / Car List</Text>
-    </View>
+    <ScrollView className="flex-1">
+      <View className="flex-1 p-4">
+        <MapCard />
+        <CarPreviewList />
+      </View>
+    </ScrollView>
   );
 };
 
